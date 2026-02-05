@@ -62,14 +62,8 @@ export default function ResultCard({ result }) {
         <div className="server-info">
           <p className="info-item">
             <span className="info-label">🖥️ Servidor:</span>
-            <span className="info-value">{serverName}</span>
+            <span className="info-value server-ip">{serverIP || serverName}</span>
           </p>
-          {serverIP && (
-            <p className="info-item">
-              <span className="info-label">🌐 IP:</span>
-              <span className="info-value server-ip">{serverIP}</span>
-            </p>
-          )}
         </div>
 
         {result.regdate && (
