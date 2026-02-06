@@ -33,11 +33,20 @@ function App() {
 
       const data = await response.json()
       
-      // Procesar los resultados
-      if (data.results && Array.isArray(data.results)) {
-        const processedResults = data.results.map((result) => {
+      // Procesar los resultados - manejar tanto array directo como objeto con results
+      let resultsArray = []
+      if (Array.isArray(data)) {
+        resultsArray = data
+      } else if (data.results && Array.isArray(data.results)) {
+        resultsArray = data.results
+      } else {
+        throw new Error('Formato de respuesta inválido')
+      }
+
+      const processedResults = resultsArray.map((result) => {
+        // Si el resultado tiene una propiedad 'data', procesarla
+        if (result.data) {
           try {
-            // Si el data es un string JSON, parsearlo
             const parsedData = typeof result.data === 'string' 
               ? JSON.parse(result.data) 
               : result.data
@@ -45,12 +54,12 @@ function App() {
           } catch (e) {
             return result
           }
-        })
-        setResults(processedResults)
-        setSearched(true)
-      } else {
-        throw new Error('Formato de respuesta inválido')
-      }
+        }
+        // Si no tiene 'data', devolver el resultado directamente
+        return result
+      })
+      setResults(processedResults)
+      setSearched(true)
     } catch (err) {
       setError(err.message || 'Error al buscar el usuario')
       setResults([])

@@ -1,12 +1,9 @@
-// En desarrollo: URLs relativas (Vite las proxea)
-// En producción: URLs absolutas (Cloudflare las redirige)
+// API Base URL - siempre usa el servidor externo
 
-const isDev = import.meta.env.DEV
-
-const BASE = isDev ? '' : 'https://basededatosmardify.onrender.com'
+const BASE = 'https://basededatos.gokucomdohd.pro'
 
 export const API_ENDPOINTS = {
-  login: `${BASE}/login`,
-  register: `${BASE}/register`,
+  login: `${BASE}/api/login`,
+  register: `${BASE}/api/register`,
   search: (username) => `${BASE}/search/api/user/${encodeURIComponent(username)}`,
 }
