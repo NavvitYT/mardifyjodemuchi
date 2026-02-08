@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { useAuth } from './context/AuthContext'
 import { API_ENDPOINTS } from './config/api'
@@ -13,6 +13,16 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [searched, setSearched] = useState(false)
+  const [showAppPopup, setShowAppPopup] = useState(false)
+
+  // Mostrar el popup después de 3 segundos
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowAppPopup(true)
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleSearch = async (username) => {
     if (!username.trim()) {
@@ -105,6 +115,42 @@ function App() {
           <footer className="footer">
             <p>Mardify © 2026 - Buscador de Cuentas Minecraft</p>
           </footer>
+
+          {/* Popup de App */}
+          {showAppPopup && (
+            <div className="app-popup-overlay">
+              <div className="app-popup">
+                <button 
+                  className="app-popup-close" 
+                  onClick={() => setShowAppPopup(false)}
+                  aria-label="Cerrar popup"
+                >
+                  ✕
+                </button>
+                <div className="app-popup-content">
+                  <h2>🚀 ¡Ya salió la App de Mardify!</h2>
+                  <p>Descarga la versión de escritorio para una mejor experiencia</p>
+                  <div className="app-popup-actions">
+                    <button 
+                      className="app-popup-download-btn"
+                      onClick={() => {
+                        window.open('https://github.com/NavvitYT/Mardify-APP/releases/tag/v1.0.0', '_blank')
+                        setShowAppPopup(false)
+                      }}
+                    >
+                      📥 Descargar App
+                    </button>
+                    <button 
+                      className="app-popup-later-btn"
+                      onClick={() => setShowAppPopup(false)}
+                    >
+                      Más tarde
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
